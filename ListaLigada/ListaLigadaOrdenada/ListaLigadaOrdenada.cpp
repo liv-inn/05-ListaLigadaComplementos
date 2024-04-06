@@ -1,3 +1,5 @@
+//Feito por: Lívia Neves
+
 #include <iostream>
 using namespace std;
 
@@ -114,7 +116,7 @@ void exibirElementos()
 
 void inserirElemento()
 {
-	// aloca memoria dinamicamente para o novo elemento
+	// aloca memoria 
 	NO* novo = (NO*)malloc(sizeof(NO));
 	if (novo == NULL)
 	{
@@ -125,29 +127,74 @@ void inserirElemento()
 	cin >> novo->valor;
 	novo->prox = NULL;
 
-	if (primeiro == NULL)
-	{
+	if (primeiro == NULL || primeiro->valor >= novo->valor) {
+		novo->prox = primeiro;
 		primeiro = novo;
 	}
-	else
-	{
-		// procura o final da lista
-		NO* aux = primeiro;
-		while (aux->prox != NULL) {
-			aux = aux->prox;
+	else {
+		NO* atual = primeiro;
+		while (atual->prox != NULL && atual->prox->valor < novo->valor) {
+			atual = atual->prox;
 		}
-		aux->prox = novo;
+		if (atual->prox != NULL && atual->prox->valor == novo->valor) {
+			cout << "O elemento já está na lista.";
+			free(novo);
+		}
+		else {
+			novo->prox = atual->prox;
+			atual->prox = novo;
+		}
 	}
 }
 
 void excluirElemento()
 {
+	int valor;
+	cout << "Que elemento você deseja excluir?";
+	cin >> valor;
 
+	NO* atual = primeiro;
+	NO* anterior = NULL;
+
+	while (atual != NULL && atual->valor < valor) {
+		anterior = atual;
+		atual = atual->prox;
+	}
+
+	if (atual != NULL && atual->valor == valor) {
+		if (anterior == NULL) {
+			primeiro = atual->prox;
+		}
+		else {
+			anterior->prox = atual->prox;
+		}
+		free(atual);
+		cout << "EXCLUIDO";
+	}
+	else {
+		cout << "NAO ENCONTRADO";
+	}
 }
+
+
 
 void buscarElemento()
 {
+	int valor;
+	cout << "Digite o elemento a ser buscado: ";
+	cin >> valor;
+
+	NO* atual = primeiro;
+	while (atual != NULL && atual->valor < valor) {
+		atual = atual->prox;
+	}
+
+	if (atual != NULL && atual->valor == valor) {
+		cout << "ELEMENTO ENCONTRADO";
+	}
+	else {
+		cout << "NAO ENCONTRADO";
+	}
 
 }
-
 
